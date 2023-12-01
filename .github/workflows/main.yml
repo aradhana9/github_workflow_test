@@ -14,13 +14,12 @@ jobs:
       - name: prepare matrix
         id: set-matrix
         run: |
-          notifsList="ticketsResults.txt"
+          notifsList="testresults.txt"
           notifs_length=$(cat ticketsResults.txt | wc -l)
           while IFS= read -r line; do
             echo "Sending ###$line###"
             echo "::set-output name=matrix::$(line | jq -R -s -c 'split("\n")[:-1]')"
           done < "$notifsList"
-        working-directory: ./nuxeo-tools-support-priv/
   create-matrix:
     needs: prepare-matrix
     runs-on: ubuntu=latest
