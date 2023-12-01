@@ -15,7 +15,7 @@ jobs:
         id: set-matrix
         run: |
           notifsList="testresults.txt"
-          notifs_length=$(cat ticketsResults.txt | wc -l)
+          notifs_length=$(cat testresults.txt | wc -l)
           while IFS= read -r line; do
             echo "Sending ###$line###"
             echo "::set-output name=matrix::$(line | jq -R -s -c 'split("\n")[:-1]')"
