@@ -1,0 +1,37 @@
+on:
+    workflow_dispatch
+
+jobs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+        matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: prepare matrix
+        id: set-matrix
+        run: |
+          notifsList="ticketsResults.txt"
+          notifs_length=$(cat ticketsResults.txt | wc -l)
+          while IFS= read -r line; do
+            echo "Sending ###$line###"
+            echo "::set-output name=matrix::$(line | jq -R -s -c 'split("\n")[:-1]')"
+          done < "$notifsList"
+  create-matrix:
+    needs: prepare-matrix
+    runs-on: ubuntu=latest
+    strategy:
+      matrix:
+        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - run: | 
+          echo "{{ matrix.tickets }}"
+
+  
+  
