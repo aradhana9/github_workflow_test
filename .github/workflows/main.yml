@@ -20,7 +20,7 @@ jobs:
             echo "Sending ###$line###"
             echo "::set-output name=matrix::$(line | jq -R -s -c 'split("\n")[:-1]')"
           done < "$notifsList"
-        working-directory: ./nuxeo-tools-support-priv/tickets/stages/
+        working-directory: ./nuxeo-tools-support-priv/
   create-matrix:
     needs: prepare-matrix
     runs-on: ubuntu=latest
