@@ -5,7 +5,7 @@ jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
     outputs:
-        matrix: ${{ steps.set-matrix.outputs.matrix }}
+        matrix: ${{ steps.set-matrix.outputs.result }}
     steps:
 
       - name: Checkout Repository
@@ -18,11 +18,15 @@ jobs:
           notifs_length=$(cat testresults.txt | wc -l)
           while IFS= read -r line; do
             echo "Sending ###$line###"
-            echo "name=matrix::$(line | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+            - uses: actions/github-script@v6
+              id: matrix-arrays
+              with:
+                script: "return {os: context.payload.$line}"
+                result-encoding: json
           done < "$notifsList"
   create-matrix:
     needs: prepare-matrix
-    runs-on: ubuntu=latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
