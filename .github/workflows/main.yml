@@ -25,7 +25,7 @@ jobs:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
     steps:
       - run: |
-          echo "Dynamic value: ${{ needs.prepare-matrix.outputs.matrix }}"
+          echo "Dynamic value: ${{ matrix.tickets }}"
 
   
   
