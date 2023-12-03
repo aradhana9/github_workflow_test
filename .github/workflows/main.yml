@@ -19,7 +19,7 @@ jobs:
           while IFS= read -r line; do
             echo "Sending ###$line###"
             echo "matrix=$( echo $line|jq -cRs '.' )" >> $GITHUB_OUTPUT
-          done < "$testresults.txt"
+          done < "$notifsList"
             
   create-matrix:
     needs: prepare-matrix
