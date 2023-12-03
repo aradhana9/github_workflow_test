@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}.url
     steps:
       - run: |
           echo "Dynamic value: ${{ matrix.tickets }}"
