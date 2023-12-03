@@ -16,8 +16,11 @@ jobs:
         run: |
           notifsList="testresults.txt"
           notifs_length=$(cat testresults.txt | wc -l)
+          while IFS= read -r line; do
             echo "Sending ###$line###"
-            echo "matrix=${cat testresults.txt |jq -R -s -c 'split("\n")[:-1]'}" >> $GITHUB_OUTPUT
+            echo "matrix=$( echo $line|jq -cRs '.' )" >> $GITHUB_OUTPUT
+          done < "$testresults.txt"
+            
   create-matrix:
     needs: prepare-matrix
     runs-on: ubuntu-latest
