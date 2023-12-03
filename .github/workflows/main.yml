@@ -40,7 +40,7 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_TITLE: From Github Actions
-          SLACK_MESSAGE: "Hello Slack"
+          SLACK_MESSAGE: ${{ matrix.tickets }}"
           SLACK_COLOR: "#723fc4"
   
   
