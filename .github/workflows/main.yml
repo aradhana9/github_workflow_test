@@ -31,7 +31,7 @@ jobs:
         env:
           SLACK_WEBHOOK: "https://hooks.slack.com/services/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"
           SLACK_TITLE: From Github Actions
-          SLACK_MESSAGE: "Actor: ${{github.actor}}, Event: ${{github.event_name}}"
+          SLACK_MESSAGE: "Hello Slack"
           SLACK_COLOR: "#723fc4"
   
   
