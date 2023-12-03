@@ -20,6 +20,9 @@ jobs:
   create-matrix:
     needs: prepare-matrix
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
     container:
       image: node:20.3-alpine3.17
       # credentials:
@@ -29,9 +32,6 @@ jobs:
         API_URL: some-url.com
       ports:
         - 80
-    strategy:
-      matrix:
-        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
     steps:
       - run: |
           echo "Dynamic value: ${{ matrix.tickets }}"
