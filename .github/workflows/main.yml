@@ -24,12 +24,12 @@ jobs:
   create-matrix:
     needs: prepare-matrix
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+#    strategy:
+#      matrix:
+#        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
     steps:
       - run: |
-          echo "Dynamic value: ${{ matrix.tickets }}"
+          echo "Dynamic value: ${{ needs.prepare-matrix.outputs.matrix }}"
 
   
   
