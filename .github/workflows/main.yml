@@ -16,16 +16,22 @@ jobs:
         run: |
           notifsList="testresults.txt"
           notifs_length=$(cat testresults.txt | wc -l)
-            echo "matrix=$(cat testresults.txt | sed -n 's/^@here :alert: <\([^|]*\)|\([^>]*\)> \(.*\) :alert: \[\([^]]*\)\]/{"url":"\1","issue":"\2","duration":"\4"}/p' | jq -cRs 'split("\n")[:-1]' )" >> $GITHUB_OUTPUT          
+            echo "matrix=$(cat testresults.txt | jq -cRs 'split("\n")[:-1]' )" >> $GITHUB_OUTPUT          
   create-matrix:
     needs: prepare-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix).url }}
+        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
     steps:
       - run: |
           echo "Dynamic value: ${{ matrix.tickets }}"
-
+      - name: Send a slack message
+        uses: docker://technosophos/slack-notify
+        env:
+          SLACK_WEBHOOK: "https://hooks.slack.com/services/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"
+          SLACK_TITLE: From Github Actions
+          SLACK_MESSAGE: "Actor: ${{github.actor}}, Event: ${{github.event_name}}"
+          SLACK_COLOR: "#723fc4"
   
   
