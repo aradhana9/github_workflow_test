@@ -15,7 +15,8 @@ jobs:
         id: set-matrix
         run: |
           notifsList="testresults.txt"
-          notifs_length=$(cat testresults.txt | wc -l)
+          notifs_length=$(cat testresults.txt | wc -l|tee total_result.txt)
+          echo "$( cat total_result.txt|wc -l )"
           echo "matrix=$(cat testresults.txt | jq -cRs 'split("\n")[:-1]' )" >> $GITHUB_OUTPUT          
   create-matrix:
     needs: prepare-matrix
