@@ -34,7 +34,7 @@ jobs:
         - 80
     steps:
       - run: |
-          echo "Dynamic value: ${{ matrix.tickets }}"
+          echo "Dynamic value: ${{ matrix.tickets.url }}"
       - name: Send a slack message
         uses: docker://technosophos/slack-notify
         with:
