@@ -39,14 +39,14 @@ jobs:
         uses: docker://technosophos/slack-notify
         with:
           # For posting a rich message using Block Kit
-        payload: |
-          {
-            "blocks": [
-               {
-                 ${{ matrix.tickets }}  
-               }
-            ]
-          }
-  env:
-    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-    SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          payload: |
+            {
+              "blocks": [
+                 {
+                   ${{ matrix.tickets }}  
+                 }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
