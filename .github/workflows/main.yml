@@ -32,12 +32,9 @@ jobs:
       ports:
         - 80
     steps:
-      - name: Print Matrix Elements
+      - name: Access matrix value
         run: |
-          for ticket in "${{ matrix.tickets }}"; do
-            notifer=$(echo "$ticket")
-            echo "$notifer"
-          done
+          url=$(echo "${{ matrix.tickets }}" | jq -r '.[0].url')
       - name: Send a slack message
         uses: docker://technosophos/slack-notify
         with:
