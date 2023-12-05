@@ -1,12 +1,34 @@
+Skip to content
+aradhana9
+/
+github_workflow_test
+
+Type / to search
+
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+.github/workflows/main.yml
+.github/workflows/main.yml #31
+Jobs
+Run details
+Workflow file for this run
+.github/workflows/main.yml at 4854bf0
 on:
-  workflow_dispatch
+    workflow_dispatch
 
 jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+        matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -14,16 +36,33 @@ jobs:
         id: set-matrix
         run: |
           testresult=$(cat testresults.txt)
-          matrix=$( echo "$testresult"|jq -R '[capture("(?<notifer>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")]'| jq -cs )
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          matrix=$( echo "$testresult"|jq -R '[capture("(?<notifer>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")]'|jq -cs )
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT        
   create-matrix:
     needs: prepare-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+    container:
+      image: node:20.3-alpine3.17
+      # credentials:
+      #   username:
+      #   password:
+      env:
+        API_URL: some-url.com
+      ports:
+        - 80
     steps:
-      - name: Access matrix value
-        run: |
-          echo "${{ matrix.tickets }}" | jq .
-
+      - run: |
+          echo "Dynamic value: ${{ matrix.tickets }}"
+      - name: Send a slack message
+        uses: docker://technosophos/slack-notify
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_TITLE: From Github Actions
+          SLACK_MESSAGE: ${{ matrix.tickets }}
+          SLACK_COLOR: "#723fc4"
+  
+  
+Editing github_workflow_test/.github/workflows/main.yml at main · aradhana9/github_workflow_test
