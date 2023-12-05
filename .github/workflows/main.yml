@@ -36,7 +36,7 @@ jobs:
         run: |
           for ticket in "${{ matrix.tickets }}"; do
             notifer=$(echo "$ticket")
-            echo $notifer
+            echo "$notifer"
           done
       - name: Send a slack message
         uses: docker://technosophos/slack-notify
