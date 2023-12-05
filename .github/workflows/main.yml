@@ -42,6 +42,3 @@ jobs:
           SLACK_TITLE: From Github Actions
           SLACK_MESSAGE: ${{ matrix.tickets }}
           SLACK_COLOR: "#723fc4"
-  
-  
-Editing github_workflow_test/.github/workflows/main.yml at main · aradhana9/github_workflow_test
