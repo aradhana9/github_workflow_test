@@ -34,6 +34,7 @@ jobs:
     steps:
       - name: Print Matrix Elements
         run: |
+          echo "${{ matrix }}"
           for ticket in "${{ matrix.tickets }}"; do
             notifer=$(echo "$ticket" | jq -R '.notifer')
             alert=$(echo "$ticket" | jq -R '.alert')
