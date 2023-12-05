@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix).notifier }}
     container:
       image: node:20.3-alpine3.17
     # credentials:
