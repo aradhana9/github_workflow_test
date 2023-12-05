@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: Access matrix value
         run: |
-          url=$(echo "${{ matrix.tickets }}.notify)
+          url=$(echo "${{ matrix.tickets }}.notifer)
       - name: Send a slack message
         uses: docker://technosophos/slack-notify
         with:
