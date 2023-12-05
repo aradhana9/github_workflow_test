@@ -37,8 +37,10 @@ jobs:
           echo "Dynamic value: ${{ matrix.tickets }}"
       - name: Send a slack message
         uses: docker://technosophos/slack-notify
+        with:
+          payload: |
+            {
+              ${{ matrix.tickets }}
+            }
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_TITLE: From Github Actions
-          SLACK_MESSAGE: ${{ matrix.tickets }}
-          SLACK_COLOR: "#723fc4"
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
