@@ -13,7 +13,7 @@ jobs:
       - name: prepare matrix
         id: set-matrix
         run: |
-          testresult=`cat testresults.txt`
+          testresult=$(cat testresults.txt)
           matrix=$( echo "$testresult"|jq -R '[capture("(?<notifer>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")]' )
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 #          notifs_length=$(cat testresults.txt | wc -l|tee total_result.txt)
