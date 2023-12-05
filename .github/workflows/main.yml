@@ -22,31 +22,8 @@ jobs:
     strategy:
       matrix:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
-    container:
-      image: node:20.3-alpine3.17
-    # credentials:
-    #   username:
-    #   password:
-      env:
-        API_URL: some-url.com
-      ports:
-        - 80
     steps:
       - name: Access matrix value
         run: |
-          url=$(echo "${{ matrix.tickets }}.notifer)
-      - name: Send a slack message
-        uses: docker://technosophos/slack-notify
-        with:
-          # For posting a rich message using Block Kit
-          payload: |
-            {
-              "blocks": [
-                 {
-                   ${{ matrix.tickets }}  
-                 }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          echo "${{ matrix.tickets }}"
+
