@@ -25,5 +25,5 @@ jobs:
     steps:
       - name: Access matrix value
         run: |
-          echo "${{ matrix.tickets }}"
+          echo "${{ matrix.tickets }}" | jq .
 
