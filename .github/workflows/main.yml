@@ -33,8 +33,16 @@ jobs:
       ports:
         - 80
     steps:
-      - run: |
-          echo "Dynamic value: ${{ matrix.tickets }}"
+      - name: Print Matrix Elements
+        run: |
+          for tickets in "${{ matrix.tickets }}"; do
+            notifer=$(echo "$config" | jq -r '.notifer')
+            alert=$(echo "$config" | jq -r '.alert')
+            url=$(echo "$config" | jq -r '.url')
+            title=$(echo "$config" | jq -r '.title')
+            duration=$(echo "$config" | jq -r '.duration')
+            echo "Notifer: $notifer, Alert: $alert, URL: $url, Title: $title, Duration: $duration"
+          done
       - name: Send a slack message
         uses: docker://technosophos/slack-notify
         with:
