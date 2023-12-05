@@ -35,12 +35,12 @@ jobs:
     steps:
       - name: Print Matrix Elements
         run: |
-          for tickets in "${{ matrix.tickets }}"; do
-            notifer=$(echo "$config" | jq -r '.notifer')
-            alert=$(echo "$config" | jq -r '.alert')
-            url=$(echo "$config" | jq -r '.url')
-            title=$(echo "$config" | jq -r '.title')
-            duration=$(echo "$config" | jq -r '.duration')
+          for ticket in "${{ matrix.tickets }}"; do
+            notifer=$(echo "$ticket" | jq -r '.notifer')
+            alert=$(echo "$ticket" | jq -r '.alert')
+            url=$(echo "$ticket" | jq -r '.url')
+            title=$(echo "$ticket" | jq -r '.title')
+            duration=$(echo "$ticket" | jq -r '.duration')
             echo "Notifer: $notifer, Alert: $alert, URL: $url, Title: $title, Duration: $duration"
           done
       - name: Send a slack message
