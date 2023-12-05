@@ -1,24 +1,3 @@
-Skip to content
-aradhana9
-/
-github_workflow_test
-
-Type / to search
-
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-Settings
-.github/workflows/main.yml
-.github/workflows/main.yml #31
-Jobs
-Run details
-Workflow file for this run
-.github/workflows/main.yml at 4854bf0
 on:
     workflow_dispatch
 
