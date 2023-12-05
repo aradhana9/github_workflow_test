@@ -1,23 +1,24 @@
 on:
-    workflow_dispatch
+  workflow_dispatch
 
 jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
     outputs:
-        matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: prepare matrix
         id: set-matrix
         run: |
-          notifsList="testresults.txt"
-          notifs_length=$(cat testresults.txt | wc -l|tee total_result.txt)
-          echo "$( cat total_result.txt|wc -l )"
-          echo "matrix=$(cat testresults.txt | jq -cRs 'split("\n")[:-1]' )" >> $GITHUB_OUTPUT          
+          testresult=`cat testresults.txt`
+          matrix=$( echo "$testresult"|jq -R '[capture("(?<notifer>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")]' )
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+#          notifs_length=$(cat testresults.txt | wc -l|tee total_result.txt)
+#          echo "$( cat total_result.txt|wc -l )"
+        
   create-matrix:
     needs: prepare-matrix
     runs-on: ubuntu-latest
@@ -26,9 +27,9 @@ jobs:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
     container:
       image: node:20.3-alpine3.17
-      # credentials:
-      #   username:
-      #   password:
+    # credentials:
+    #   username:
+    #   password:
       env:
         API_URL: some-url.com
       ports:
@@ -43,5 +44,3 @@ jobs:
           SLACK_TITLE: From Github Actions
           SLACK_MESSAGE: ${{ matrix.tickets }}
           SLACK_COLOR: "#723fc4"
-  
-  
