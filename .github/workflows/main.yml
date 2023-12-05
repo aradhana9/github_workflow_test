@@ -15,7 +15,7 @@ jobs:
         id: set-matrix
         run: |
           testresult=$(cat testresults.txt)
-          matrix=$( echo "$testresult"|jq -R '[capture("(?<notifer>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")]'|jq -cs )
+          matrix=$( echo "$testresult"|jq -R 'capture("(?<targets>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")' | jq -sc )
           echo "matrix=$matrix" >> $GITHUB_OUTPUT        
   create-matrix:
     needs: prepare-matrix
