@@ -39,7 +39,7 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "@here **Nuxeo Suport breachwatcher**"
+                      "text": "Nuxeo Suport breachwatcher"
                     }
                   ]
                 },
