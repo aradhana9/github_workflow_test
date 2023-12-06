@@ -30,20 +30,11 @@ jobs:
             {
               "blocks": [
                 {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "Nuxeo Suport breachwatcher"
-                    }
-                  ]
-                },
-                {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Hello"
-                  }
+                    "text": "Hello, Ticket is approaching breach at [03h40m]"
+                   }
                 }
               ]
             }
