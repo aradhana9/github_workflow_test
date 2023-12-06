@@ -28,6 +28,7 @@ jobs:
         with:
           payload: |
             {
+              "text": "Hello, Ticket is approaching breach at [03h40m]",
               "blocks": [
                 {
                   "type": "section",
