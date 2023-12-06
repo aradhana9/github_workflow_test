@@ -50,7 +50,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":alert: Ticket https://jira.nuxeo.com/browse/SUPNXP-48900|SUPNXP-48900|Config NUXEO - Recommandation> approaching breach in [03h40m] !"
+                    "text": "Hello"
                   }
                 }
               ]
