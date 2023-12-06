@@ -41,7 +41,7 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "${{ matrix.tickets.notifier }} **Nuxeo Suport breachwatcher**"
+                      "text": "${{ matrix.tickets.targets }} **Nuxeo Suport breachwatcher**"
                     }
                   ]
                 },
@@ -52,7 +52,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ matrix.tickets.alert }} Ticket <${{ matrix.tickets.url }}|${{ matrix.tickets.title }}> approaching breach in ${{ matrix.tickets.duration }} !"
+                    "text": ":${{ matrix.tickets.alert }}: Ticket <${{ matrix.tickets.url }}|${{ matrix.tickets.title }}> approaching breach in ${{ matrix.tickets.duration }} !"
                   }
                 }
               ]
