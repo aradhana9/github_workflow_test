@@ -30,13 +30,13 @@ jobs:
         with:
           payload: |
             {
-              "text": "${{ matrix.tickets.alert }} Ticket <${{ matrix.tickets.url }}|"${{ matrix.tickets.title }}"> breached ${{ matrix.tickets.duration }} ago!",
+              "text": "Hello there ${{ matrix.tickets.duration }} ago",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ matrix.tickets.alert }} Ticket <${{ matrix.tickets.url }}|"${{ matrix.tickets.title }}"> breached ${{ matrix.tickets.duration }} ago!"
+                    "text": "Hello there ${{ matrix.tickets.duration }} ago"
                   }
                 }
               ]
