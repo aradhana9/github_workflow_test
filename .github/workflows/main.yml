@@ -2,70 +2,54 @@ on:
   workflow_dispatch
 
 jobs:
-prepare-matrix:
-  runs-on: ubuntu-latest
-  outputs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-  steps:
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-
-    - name: prepare matrix
-      id: set-matrix
-      run: |
-        testresult=$(cat testresults.txt)
-        matrix=$( echo "$testresult"|jq -R 'capture("(?<targets>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")' | jq -sc )
-        echo "matrix=$matrix" >> $GITHUB_OUTPUT        
-create-matrix:
-  needs: prepare-matrix
-  runs-on: ubuntu-latest
-  strategy:
-    matrix:
-      tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
-  container:
-    image: node:20.3-alpine3.17
+      - name: prepare matrix
+        id: set-matrix
+        run: |
+          testresult=$(cat testresults.txt)
+          matrix=$( echo "$testresult"|jq -R 'capture("(?<targets>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")' | jq -sc )
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT        
+  create-matrix:
+    needs: prepare-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+    container:
+      image: node:20.3-alpine3.17
     # credentials:
     #   username:
     #   password:
-    env:
-      API_URL: some-url.com
-    ports:
-      - 80
-  steps:
-    - run: |
-        echo "Dynamic value: ${{ matrix.tickets.url }}"
-    - name: Send a slack message
-      uses: docker://technosophos/slack-notify
-      with:
-        payload: |
-          {
-            "blocks": [
-               {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "image",
-                      "image_url": "https://avatars.githubusercontent.com/u/460607?s=48&v=4",
-                      "alt_text": "nuxeo suport"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "${{ matrix.tickets.notifier }} **Nuxeo Suport breachwatcher**"
-                    }
-                  ]
-                },
-                {
-                  "type": "divider"
-                },
+      env:
+        API_URL: some-url.com
+      ports:
+        - 80
+    steps:
+      - run: |
+          echo "Dynamic value: ${{ matrix.tickets.url }}"
+      - name: Send a slack message
+        uses: docker://technosophos/slack-notify
+        with:
+          payload: |
+            {
+              "text": "${{ matrix.tickets.alert }} Ticket <${{ matrix.tickets.url }}|"${{ matrix.tickets.title }}"> breached ${{ matrix.tickets.duration }} ago!",
+              "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
                     "text": "${{ matrix.tickets.alert }} Ticket <${{ matrix.tickets.url }}|"${{ matrix.tickets.title }}"> breached ${{ matrix.tickets.duration }} ago!"
                   }
-               }
+                }
               ]
-          }
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
