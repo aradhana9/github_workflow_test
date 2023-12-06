@@ -33,11 +33,6 @@ jobs:
                   "type": "context",
                   "elements": [
                     {
-                      "type": "image",
-                      "image_url": "https://avatars.githubusercontent.com/u/460607?s=48&v=4",
-                      "alt_text": "Nuxeo Support"
-                    },
-                    {
                       "type": "mrkdwn",
                       "text": "Nuxeo Suport breachwatcher"
                     }
