@@ -22,24 +22,50 @@ jobs:
     strategy:
       matrix:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+    container:
+      image: node:20.3-alpine3.17
+    # credentials:
+    #   username:
+    #   password:
+      env:
+        API_URL: some-url.com
+      ports:
+        - 80
     steps:
       - run: |
           echo "Dynamic value: ${{ matrix.tickets.url }}"
       - name: Send a slack message
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: docker://technosophos/slack-notify
         with:
           payload: |
             {
-              "text": "Hello there ${{ matrix.tickets.duration }} ago",
               "blocks": [
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "image",
+                      "image_url": "https://avatars.githubusercontent.com/u/460607?s=48&v=4",
+                      "alt_text": "Nuxeo Support"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "${{ matrix.tickets.notifier }} **Nuxeo Suport breachwatcher**"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
+                },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Hello there ${{ matrix.tickets.duration }} ago"
+                    "text": "${{ matrix.tickets.alert }} Ticket <${{ matrix.tickets.url }}|${{ matrix.tickets.title }}> approaching breach in ${{ matrix.tickets.duration }} !"
                   }
                 }
               ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
