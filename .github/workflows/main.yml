@@ -29,13 +29,13 @@ jobs:
           channel-id: "C6XAXBW3S"
           payload: |
             {
-              "text": "Hello, Ticket is approaching breach at [03h40m]",
+              "text": "Hello, this is test message",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Hello, Ticket is approaching breach at [03h40m]"
+                    "text": "Hello this is test message"
                    }
                 }
               ]
