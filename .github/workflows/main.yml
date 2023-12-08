@@ -26,6 +26,7 @@ jobs:
       - name: Send a slack message
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117
         with:
+          channel-id: "C6XAXBW3S"
           payload: |
             {
               "text": "Hello, Ticket is approaching breach at [03h40m]",
@@ -40,4 +41,4 @@ jobs:
               ]
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
