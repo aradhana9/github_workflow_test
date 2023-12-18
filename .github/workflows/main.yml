@@ -26,7 +26,7 @@ jobs:
       - name: Send a slack message
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117
         with:
-          channel-id: "C04QERF6BC2"
+          channel-id: "C06AG4TUBRB"
           payload: |
             {
               "text": "Hello, this is test message",
