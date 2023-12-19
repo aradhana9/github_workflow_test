@@ -57,9 +57,6 @@ jobs:
         id: get-tickets
         run: |
           ticketsResults=$( cat testresults.txt )
-          if [ -n $github.event.inputs.ticketsResults ];then
-            ticketsResults="${{ github.event.inputs.ticketsResults }}"
-          fi
           echo "ticketsResults=$ticketsResults" >> "$GITHUB_OUTPUT"
       
       - name: Create Tickets Matrix
