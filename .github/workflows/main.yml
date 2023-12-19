@@ -63,13 +63,15 @@ jobs:
           fi
 
       - name: No tickets
-        if: ${{ steps.create-ticket-matrix.outputs.ticketsResults == '' }}
-        run: echo "No tickets are approaching breach"
+        if: $
+        run: |
+          if [ "${{ steps.create-ticket-matrix.outputs.ticketsResults }}" == '' ]; then
+            echo "No tickets are approaching breach"
+          fi
 
   notification:
     needs: prepare-matrix
     runs-on: ubuntu-latest
-    if: ${{ needs.prepare-matrix.outputs.ticketsResults != '' }}
     strategy:
       matrix:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
