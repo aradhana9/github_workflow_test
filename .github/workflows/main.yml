@@ -85,7 +85,7 @@ jobs:
       - name: Sending Tickets at Risk Notifications
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
           channel-id: "${{ github.event.inputs.slack_channel }}"
           payload: |
@@ -129,5 +129,7 @@ jobs:
         with:
           channel-id: "C06AG4TUBRB"
           slack-message: "Breatchwatcher job failed! <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Click here>"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
