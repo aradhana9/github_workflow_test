@@ -55,11 +55,10 @@ jobs:
       - name: Create Ticket Matrix
         id: create-ticket-matrix
         run: |
-          ticketsResults=$(cat testresults.txt)
-          echo "ticketsResults=$ticketsResults" >> "$GITHUB_ENV"
+          echo "ticketsResults=$(cat testresults.txt)" >> "$GITHUB_ENV"
           if [ -n "$ticketsResults" ];then
             matrix=$( echo "$ticketsResults"|jq -R 'capture("(?<targets>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")' | jq -sc )
-            echo "matrix=$matrix" >> $GITHUB_ENV
+            echo "matrix=$matrix" >> $GITHUB_OUTPUT
           fi
 
       - name: No tickets
