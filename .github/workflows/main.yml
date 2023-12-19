@@ -33,7 +33,6 @@ jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
     outputs:
-      ticketsResults: ${{ steps.create-ticket-matrix.outputs.ticketsResults }}
       matrix: ${{ steps.create-ticket-matrix.outputs.matrix }}
     env:
       SILENT_MODE: ${{ github.event.inputs.silent_mode }}
