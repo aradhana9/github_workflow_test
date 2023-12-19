@@ -34,6 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.create-ticket-matrix.outputs.matrix }}
+      ticketResultsLength: ${{ steps.create-ticket-matrix.outputs.ticketResultsLength }}
     env:
       SILENT_MODE: ${{ github.event.inputs.silent_mode }}
       JIRA_HOST: ${{ github.event.inputs.jira_host }}
@@ -55,6 +56,7 @@ jobs:
         id: create-ticket-matrix
         run: |
           ticketsResults=$(cat testresults.txt)
+          echo "ticketResultsLength=${#ticketsResults}" >> $GITHUB_OUTPUT
           if [ -n "$ticketsResults" ];then
             matrix=$( echo "$ticketsResults"|jq -R 'capture("(?<targets>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")' | jq -sc )
             echo "matrix=$matrix" >> $GITHUB_OUTPUT
@@ -65,6 +67,7 @@ jobs:
   notification:
     needs: prepare-matrix
     runs-on: ubuntu-latest
+    if: ${{ needs.prepare-matrix.outputs.ticketResultsLength != '' }}
     strategy:
       matrix:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
