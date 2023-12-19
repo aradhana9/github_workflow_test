@@ -62,7 +62,7 @@ jobs:
             echo "matrix=$matrix" >> $GITHUB_OUTPUT
           fi
       - name: No tickets
-        if: ${{ steps.create-ticket-matrix.outputs.ticketResultsLength != 0 }}
+        if: ${{ steps.create-ticket-matrix.outputs.ticketResultsLength == 0 }}
         run: echo "No tickets are approaching breach"
 
   notification:
