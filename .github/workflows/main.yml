@@ -56,7 +56,7 @@ jobs:
       - name: Get Ticket Details
         id: get-tickets
         run: |
-          ticketsResults=$( cat testresults.txt )
+          ticketsResults="$( cat testresults.txt )"
           echo "ticketsResults=$ticketsResults" >> "$GITHUB_OUTPUT"
       
       - name: Create Tickets Matrix
