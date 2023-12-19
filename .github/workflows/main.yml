@@ -67,7 +67,7 @@ jobs:
   notification:
     needs: prepare-matrix
     runs-on: ubuntu-latest
-    if: ${{ needs.prepare-matrix.outputs.ticketResultsLength != '' }}
+    if: ${{ needs.prepare-matrix.outputs.ticketResultsLength != 0 }}
     strategy:
       matrix:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
