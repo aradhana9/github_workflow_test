@@ -56,7 +56,6 @@ jobs:
       - name: Get Ticket Details
         id: get-tickets
         run: |
-          ticketsResults="$( ./execute_stage.sh tickets_at_risk )"
           if [ -n $github.event.inputs.ticketsResults ];then
             ticketsResults="${{ github.event.inputs.ticketsResults }}"
           fi
