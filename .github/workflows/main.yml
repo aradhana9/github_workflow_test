@@ -74,7 +74,6 @@ jobs:
   notification:
     needs: prepare-matrix
     runs-on: ubuntu-latest
-    if: ${{ env.ticketsResults_ENV_VAR != '' }}
     strategy:
       matrix:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
