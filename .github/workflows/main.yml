@@ -52,7 +52,7 @@ jobs:
           python-version: 3.x
                 
       - name: Create Ticket Matrix
-        id: get-tickets
+        id: create-ticket-matrix
         run: |
           ticketsResults=$(cat testresults.txt)
           echo "ticketsResults_ENV_VAR<<EOF" >> $GITHUB_ENV
