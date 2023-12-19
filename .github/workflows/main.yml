@@ -55,7 +55,7 @@ jobs:
       - name: Create Ticket Matrix
         id: create-ticket-matrix
         run: |
-          ticketsResults="$(cat testresults.txt )"
+          ticketsResults="$(cat ${{ github.workspace }}/testresults.txt )"
           echo "ticketsResults=$ticketsResults" >> "$GITHUB_OUTPUT"
           if [ -n "ticketsResults" ];then
             matrix=$( echo "$ticketsResults"|jq -R 'capture("(?<targets>@here) :(?<alert>.*?): <(?<url>[^ ]+)> (?<title>.*) :[^w]+ (?<duration>.*)")' | jq -sc )
