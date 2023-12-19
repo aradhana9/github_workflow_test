@@ -60,7 +60,6 @@ jobs:
             ticketsResults="${{ github.event.inputs.ticketsResults }}"
           fi
           echo "ticketsResults=$ticketsResults" >> "$GITHUB_OUTPUT"
-        working-directory: ./tickets/stages/
       
       - name: Create Tickets Matrix
         id: create-ticket-matrix
