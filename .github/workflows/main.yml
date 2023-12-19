@@ -86,7 +86,7 @@ jobs:
           channel-id: "${{ github.event.inputs.slack_channel }}"
           payload: |
             {
-              "text": "Notification on <${{ matrix.tickets.url }}|${{ matrix.tickets.title }}> breach status",
+              "text": "Notification on <${{ matrix.tickets.url }} breach status",
               "blocks": [
                 {
                   "type": "context",
