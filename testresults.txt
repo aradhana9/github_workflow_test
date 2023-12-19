@@ -1,1 +1,3 @@
 @here :alert: <https://jira.nuxeo.com/browse/SUPNXP-48900|SUPNXP-48900> Config NUXEO - Recommandation :alert: [03h40m]
+@here :alert: <https://jira.nuxeo.com/browse/SUPNXP-48879|SUPNXP-48879> Can "powerusers" group be configured to prevent content access? :alert: [01h27m]
+@here :alert: <https://jira.nuxeo.com/browse/SUPNXP-48823|SUPNXP-48823> Logrotate access.log :alert: [03h47m]
