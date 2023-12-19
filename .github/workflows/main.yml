@@ -63,7 +63,7 @@ jobs:
 
       - name: No tickets
         run: |
-          if [ "${{ steps.create-ticket-matrix.outputs.ticketsResults }}" == '' ]; then
+          if [ "$ticketsResults" == '' ]; then
             echo "No tickets are approaching breach"
           fi
 
