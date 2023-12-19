@@ -75,7 +75,7 @@ jobs:
     steps:
       - name: testing
         run: |
-          var="${{ toJson(matrix.tickets.title) }}"
+          var=${{ toJson(matrix.tickets.title) }}
           echo "$var"
           echo "${{ matrix.tickets.title }}"
       - name: Sending Tickets at Risk Notifications
