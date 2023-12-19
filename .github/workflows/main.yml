@@ -109,7 +109,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":${{ matrix.tickets.alert }}: Ticket <${{ matrix.tickets.url }}|${{ steps.escape_string.outputs.escaped_title }}> approaching breach in ${{ matrix.tickets.duration }} !"
+                    "text": ":${{ matrix.tickets.alert }}: Ticket <${{ matrix.tickets.url }}|${{ toJson(matrix.tickets.title) }}> approaching breach in ${{ matrix.tickets.duration }} !"
                   }
                 }
               ]
