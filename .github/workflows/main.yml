@@ -55,7 +55,6 @@ jobs:
         id: create-ticket-matrix
         run: |
           ticketsResults=$(cat testresults.txt)
-          echo "ticketsResults_ENV_VAR<<EOF" >> $GITHUB_ENV
           echo $ticketsResults >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
           if [ -n "$ticketsResults" ];then
