@@ -28,7 +28,7 @@ on:
   # Check for run every hour every day
   schedule:
     # Everyday at every hour.
-    - cron: '0 0-23/1 * * *'
+    - cron: '20 0-23/1 * * *'
 
 jobs:
   prepare-matrix:
