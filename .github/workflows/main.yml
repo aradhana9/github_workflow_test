@@ -131,5 +131,3 @@ jobs:
           slack-message: "Breatchwatcher job failed! <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Click here>"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
