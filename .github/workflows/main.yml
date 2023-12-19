@@ -74,7 +74,7 @@ jobs:
         tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
     steps:
       - name: testing
-       run: echo "${{ matrix.tickets.title }}"
+        run: echo "${{ matrix.tickets.title }}"
       - name: Sending Tickets at Risk Notifications
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         env:
