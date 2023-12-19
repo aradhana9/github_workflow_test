@@ -75,7 +75,7 @@ jobs:
     steps:
       - name: testing
         run: |
-          var=$(echo "${{ toJson(matrix.tickets.title) }}" | jq -r @uri)
+          var="${{ toJson(matrix.tickets.title) }}"
           echo "$var"
           echo "${{ matrix.tickets.title }}"
       - name: Sending Tickets at Risk Notifications
