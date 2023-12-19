@@ -57,7 +57,7 @@ jobs:
         id: get-tickets
         run: |
           if [ -n $github.event.inputs.ticketsResults ];then
-            ticketsResults=${{ github.event.inputs.ticketsResults }}
+            ticketsResults="${{ github.event.inputs.ticketsResults }}"
           fi
           echo "ticketsResults=$ticketsResults" >> "$GITHUB_OUTPUT"
       
