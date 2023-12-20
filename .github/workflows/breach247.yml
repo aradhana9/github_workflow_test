@@ -55,7 +55,6 @@ jobs:
             matrix=$( echo "$ticketsResults"|jq -R 'capture("(?<targets>@here) :(?<warning>.*?): <(?<url>[^ ]+)> (?<title>.*) (?<duration>.*)")| .title |= sub(":warning:"; "")' | jq -sc )
             echo "matrix=$matrix" >> $GITHUB_OUTPUT
           fi
-        working-directory: ./tickets/stages/
       
       - name: No tickets
         if: ${{ steps.create-ticket-matrix.outputs.ticketResultsLength == 0 }}
