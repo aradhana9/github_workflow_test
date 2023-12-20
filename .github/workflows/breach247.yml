@@ -49,7 +49,7 @@ jobs:
       - name: Create Ticket Matrix
         id: create-ticket-matrix
         run: |
-          ticketsResults=$( ./execute_stage.sh tickets_at_risk weekend )
+          ticketsResults=$( cat breachresult.txt )
           echo "ticketResultsLength=${#ticketsResults}" >> $GITHUB_OUTPUT
           if [ -n "$ticketsResults" ];then
             matrix=$( echo "$ticketsResults"|jq -R 'capture("(?<targets>@here) :(?<warning>.*?): <(?<url>[^ ]+)> (?<title>.*) (?<duration>.*)")| .title |= sub(":warning:"; "")' | jq -sc )
