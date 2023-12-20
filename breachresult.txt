@@ -1,0 +1,3 @@
+@here :warning: <https://jira.nuxeo.com/browse/SUPNXP-49119|SUPNXP-49119> Bulk status topic usage of nuxeo.core.bulk.status.concurrencyMax property [24/7]:warning: [00d14h45m]
+@here :warning: <https://jira.nuxeo.com/browse/SUPNXP-49118|SUPNXP-49118> Python Libraries [24/7]:warning: [00d06h23m]
+@here :warning: <https://jira.nuxeo.com/browse/SUPNXP-49111|SUPNXP-49111> Authentication error with 3rd party integration to Nuxeo [24/7]:warning: [00d07h38m]
