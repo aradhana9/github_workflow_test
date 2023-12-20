@@ -104,7 +104,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":${{ matrix.tickets.alert }}: Ticket <${{ matrix.tickets.url }}|${{ matrix.tickets.url }}> approaching breach in ${{ matrix.tickets.duration }} !"
+                    "text": ":${{ matrix.tickets.alert }}: Ticket <${{ matrix.tickets.url }}|${{ matrix.tickets.title }}> approaching breach in ${{ matrix.tickets.duration }} !"
                   }
                 }
               ]
