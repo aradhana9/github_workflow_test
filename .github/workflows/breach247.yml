@@ -1,0 +1,120 @@
+# Workflow for BreachWatcher.
+name: BreachWatcher247 Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      silent_mode:
+        description: silent_mode to supress verbosity, when installing packages
+        type: boolean
+        default: true
+        required: true
+      jira_host:
+        description: Jira instance where to fetch ticket details
+        default: jira.nuxeo.com
+        required: true
+      slack_channel:
+        description: Slack channel where to send notification
+        default: support-team-notifs
+        required: true
+
+  # Check for run every hour every day
+  schedule:
+    # Everyday at every hour.
+    - cron: '0-10 * * * 5'
+    - cron: '0-10 0-6 * * 6'
+
+jobs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.create-ticket-matrix.outputs.matrix }}
+      ticketResultsLength: ${{ steps.create-ticket-matrix.outputs.ticketResultsLength }}
+    env:
+      SILENT_MODE: ${{ github.event.inputs.silent_mode }}
+      JIRA_HOST: ${{ github.event.inputs.jira_host }}
+      SLACK_CHANNEL: ${{ github.event.inputs.slack_channel }}
+      JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+      JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Set up Python
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
+        with:
+          python-version: 3.x
+                
+      - name: Create Ticket Matrix
+        id: create-ticket-matrix
+        run: |
+          ticketsResults=$( ./execute_stage.sh tickets_at_risk weekend )
+          echo "ticketResultsLength=${#ticketsResults}" >> $GITHUB_OUTPUT
+          if [ -n "$ticketsResults" ];then
+            matrix=$( echo "$ticketsResults"|jq -R 'capture("(?<targets>@here) :(?<warning>.*?): <(?<url>[^ ]+)> (?<title>.*) (?<duration>.*)")| .title |= sub(":warning:"; "")' | jq -sc )
+            echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          fi
+        working-directory: ./tickets/stages/
+      
+      - name: No tickets
+        if: ${{ steps.create-ticket-matrix.outputs.ticketResultsLength == 0 }}
+        run: echo "No tickets are approaching breach on weekends"
+
+  notification:
+    needs: prepare-matrix
+    runs-on: ubuntu-latest
+    if: ${{ needs.prepare-matrix.outputs.ticketResultsLength != 0 }}
+    strategy:
+      matrix:
+        tickets: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+    steps:
+      - name: Sending Tickets at Risk Notifications
+        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+        with:
+          channel-id: ${{ github.event.inputs.slack_channel }}
+          payload: |
+            {
+              "text": "Notification on <${{ matrix.tickets.url }}> breach status",
+              "blocks": [
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "image",
+                      "image_url": "https://avatars.githubusercontent.com/u/460607?s=48&v=4",
+                      "alt_text": "Nuxeo Support"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "${{ matrix.tickets.targets }} **Nuxeo Support Breachwatcher 24/7**"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":${{ matrix.tickets.warning }}: Ticket <${{ matrix.tickets.url }}|${{ matrix.tickets.title }}> approaching breach in ${{ matrix.tickets.duration }} !"
+                  }
+                }
+              ]
+            }
+
+  notify-on-error:
+    runs-on: ubuntu-latest
+    needs: [prepare-matrix]
+    if: ${{ failure() }}
+    steps:
+      - name: Slack Notification
+        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117
+        with:
+          channel-id: 'support-team-notifs'
+          slack-message: "Breatchwatcher 24/7 job failed! <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Click here>\nPlease check manually if 24/7 tickets will fail before Monday"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
