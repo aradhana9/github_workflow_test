@@ -14,7 +14,7 @@ on:
         required: true
       slack_channel:
         description: Slack channel where to send notification
-        default: C6XAXBW3S
+        default: C06AG4TUBRB
         required: true
       branch:
         description: branch name
@@ -84,27 +84,10 @@ jobs:
               "text": "Notification on <${{ matrix.tickets.url }} breach status",
               "blocks": [
                 {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "image",
-                      "image_url": "https://avatars.githubusercontent.com/u/460607?s=48&v=4",
-                      "alt_text": "Nuxeo Support"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "${{ matrix.tickets.targets }} **Nuxeo Suport Breachwatcher**"
-                    }
-                  ]
-                },
-                {
-                  "type": "divider"
-                },
-                {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":${{ matrix.tickets.alert }}: Ticket <${{ matrix.tickets.url }}|${{ matrix.tickets.title }}> approaching breach in ${{ matrix.tickets.duration }} !"
+                    "text": ":${{ matrix.tickets.alert }}: Ticket <${{ matrix.tickets.url }} | ${{ matrix.tickets.title }}> approaching breach in ${{ matrix.tickets.duration }} !"
                   }
                 }
               ]
