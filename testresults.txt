@@ -1,2 +1,1 @@
-@here :alert: <https://jira.nuxeo.com/browse/SUPNXP-48900|SUPNXP-48900> Config NUXEO - Recommandation :alert: [03h40m]
 @here :alert: <https://jira.nuxeo.com/browse/SUPNXP-49165|SUPNXP-49165> 2015 Nuxeo: Postgres Upgrade :alert: [03h43m]
