@@ -15,7 +15,7 @@ on:
         required: true
       slack_channel:
         description: Slack channel where to send notification
-        default: C6XAXBW3S
+        default: C06AG4TUBRB
         required: true
 
   # Check for run every hour every day
@@ -31,9 +31,9 @@ jobs:
       matrix: ${{ steps.create-ticket-matrix.outputs.matrix }}
       ticketResultsLength: ${{ steps.create-ticket-matrix.outputs.ticketResultsLength }}
     env:
-      SILENT_MODE: ${{ github.event.inputs.silent_mode }}
-      JIRA_HOST: ${{ github.event.inputs.jira_host }}
-      SLACK_CHANNEL: ${{ github.event.inputs.slack_channel }}
+      SILENT_MODE: ${{ github.event.inputs.silent_mode || true }}
+      JIRA_HOST: ${{ github.event.inputs.jira_host || 'jira.nuxeo.com' }}
+      SLACK_CHANNEL: ${{ github.event.inputs.slack_channel || 'C06AG4TUBRB' }}
       JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
       JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
 
