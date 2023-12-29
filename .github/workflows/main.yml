@@ -28,20 +28,19 @@ on:
   schedule:
     # Everyday at every hour.
     - cron: '*/1 * * * *'
-
+env:
+  SILENT_MODE: ${{ github.event.inputs.silent_mode || true }}
+  JIRA_HOST: ${{ github.event.inputs.jira_host || 'jira.nuxeo.com' }}
+  SLACK_CHANNEL: ${{ github.event.inputs.slack_channel || 'C06AG4TUBRB' }}
+  BRANCH: ${{ github.event.inputs.branch }}
+  JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+  JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
 jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.create-ticket-matrix.outputs.matrix }}
       ticketResultsLength: ${{ steps.create-ticket-matrix.outputs.ticketResultsLength }}
-    env:
-      SILENT_MODE: ${{ github.event.inputs.silent_mode || true }}
-      JIRA_HOST: ${{ github.event.inputs.jira_host || 'jira.nuxeo.com' }}
-      SLACK_CHANNEL: ${{ github.event.inputs.slack_channel || 'C06AG4TUBRB' }}
-      BRANCH: ${{ github.event.inputs.branch }}
-      JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
-      JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
 
     steps:
       - name: Checkout Repository
@@ -78,7 +77,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
-          channel-id: "${{ github.event.inputs.slack_channel }}"
+          channel-id: "${{ env.SLACK_CHANNEL }}"
           payload: |
             {
               "text": "Notification on <${{ matrix.tickets.url }} breach status",
