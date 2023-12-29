@@ -21,8 +21,8 @@ on:
   # Check for run every hour every day
   schedule:
     # Everyday at every hour.
-    - cron: '0-10 * * * 5'
-    - cron: '0-10 0-6 * * 6'
+#    - cron: '0-10 * * * 5'
+#    - cron: '0-10 0-6 * * 6'
 env:
   SILENT_MODE: ${{ github.event.inputs.silent_mode || true }}
   JIRA_HOST: ${{ github.event.inputs.jira_host || 'jira.nuxeo.com' }}
