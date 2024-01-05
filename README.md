@@ -2,10 +2,12 @@
 - [BreachWatcher.yml](#BreachWatcheryml)
 - [BreachWatcher247.yml](#BreachWatcheryml)
 ## GitHub Actions
+
 ### BreachWatcher.yml
 
 This workflow is intended to dispatch notifications to a Slack channel for tickets that are nearing a breach status.
 
+#### Detailed Explanation
 ```yaml
 on:
   workflow_dispatch:
@@ -27,7 +29,11 @@ on:
 This will allow workflow to be triggered manually using Github Actions UI. This section specifies the set of input parameters that can be provided/changed when manually triggering the workflow. Slack channel name/id, jira host url can be changed when running this workflow manually.
 
 **Steps to trigger workflow manually**
-Navigate to "Actions" tab at the top of the repository.In the left sidebar,click on the BreachWatcher Workflow. Click on "Run workflow" button towards the top right corner of the page. Input parameter can be modified while running this workflow.
+
+-  Navigate to "Actions" tab at the top of the repository.
+-  In the left sidebar,click on the BreachWatcher Workflow. 
+-  Click on "Run workflow" button towards the top right corner of the page. 
+-  Input parameter can be modified while running this workflow.
 
 ![BreachWatcher Workflow Manual Trigger](./BreachWatcher_manual_trigger.png)
 
@@ -48,18 +54,21 @@ env:
 ```
 Environment variables which can be accessible in the subsequent steps. Jira Username and password values are stored in the GitHub repository secrets under key JIRA_USERNAME and JIRA_PASSWORD respectively. These value can be updated by updating keys under repository secrets.
 
+It contains 3 user-define jobs mentioned below:
+
+**1. prepare-matrix**
+This job will check for the tickets which are about to breach in 4 hours. 
+
 ```yml
 jobs:
-```
-Contains 3 user-define jobs. 
-```yml
   prepare-matrix:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.create-ticket-matrix.outputs.matrix }}
       ticketResultsLength: ${{ steps.create-ticket-matrix.outputs.ticketResultsLength }}
 ```
-This job will check for the tickets which are about to breach in 4 hours. It consists of following sequence of tasks.
+It consists of following sequence of tasks.
+
 ```yml
     steps:
       - name: Checkout Repository
@@ -93,6 +102,9 @@ This step will fetch the tickets from jira which are approaching breach status b
         run: echo "No tickets are approaching breach"
 ```
 In this step if there are no tickets returned by the script then it will print message as "No tickets are approaching breach" and the workflow exits.
+
+**2. notification** This job will create slack notifications.
+
 ```yml
   notification:
     needs: prepare-matrix
@@ -122,9 +134,14 @@ In this step if there are no tickets returned by the script then it will print m
               ]
             }
 ```
-It depends on successful completion of "prepare-matrix" and uses a matrix strategy for parallel execution based on values obtained from output of "prepare-matrix" job. After matrix preparation, slack-github-action send notification to a slack channel. The value of SLACK_BOT_TOKEN is stored as a secret in github repository.
+It depends on successful completion of "prepare-matrix" and uses a matrix strategy for parallel execution based on values obtained from output of **"prepare-matrix" **job. After matrix preparation, slack-github-action send notification to a slack channel. The value of **SLACK_BOT_TOKEN** is stored as a secret in github repository.
+
 Slack Notification is generated like below:
+
 ![Slack Notification](./BW_slack_notif.png)
+
+**3.  notify-on-error** This job will create slack notification in case of failure.
+
 ```yml
  notify-on-error:
     runs-on: ubuntu-latest
@@ -139,7 +156,12 @@ Slack Notification is generated like below:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
 ```
-This job sends a Slack notification to the "support-team-notifs" channel if the preceding job "prepare-matrix" fails. The notification includes a message about the failure and a link to the corresponding GitHub Actions run for more information.
+This job sends a Slack notification to the "support-team-notifs" channel if the preceding job **"prepare-matrix"** fails. The notification includes a message about the failure and a link to the corresponding GitHub Actions run for more information.
+
 Slack notification generated like below:
+
 ![Slack Failed Notification](./BW_slack_failed_notif.png)
 
+### BreachWatcher247.yml
+
+This workflow functions much like the BreachWatcher workflow, with the exception of alterations to the cron schedule and some modifications to the Slack notifications generated for tickets nearing breach status on weekends.
