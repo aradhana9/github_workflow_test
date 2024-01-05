@@ -25,6 +25,7 @@ on:
         required: true
 ```
 This will allow workflow to be triggered manually using Github Actions UI. This section specifies the set of input parameters that can be provided/changed when manually triggering the workflow. Slack channel name/id, jira host url can be changed when running this workflow manually.
+
 **Steps to trigger workflow manually**
 Navigate to "Actions" tab at the top of the repository.In the left sidebar,click on the BreachWatcher Workflow. Click on "Run workflow" button towards the top right corner of the page. Input parameter can be modified while running this workflow.
 
