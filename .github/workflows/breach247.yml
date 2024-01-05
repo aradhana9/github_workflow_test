@@ -19,7 +19,7 @@ on:
         required: true
 
   # Check for run every hour every day
-  schedule:
+ # schedule:
     # Everyday at every hour.
 #    - cron: '0-10 * * * 5'
 #    - cron: '0-10 0-6 * * 6'
