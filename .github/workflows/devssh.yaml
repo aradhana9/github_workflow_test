@@ -31,7 +31,6 @@ jobs:
             Host target
               HostName 172.16.32.26
               User ubuntu
-              IdentityFile ~/.ssh/id_rsa-target
               ProxyCommand ssh -W %h:%p bastion
       - name: SCP via port-forwarding
         run: scp breachresult.txt target:/opt/
