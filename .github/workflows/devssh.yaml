@@ -15,21 +15,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.DEV_TOOLS_BASTION_PRIVATE_KEY }}
+
       - name: Install SSH key of bastion
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.DEV_TOOLS_BASTION_PRIVATE_KEY }}
           name: id_rsa-bastion
-          known_hosts: ${{ secrets.KNOWN_HOSTS_OF_TARGET }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_OF_BASTION }}
+          config: |
+            Host bastion
+              HostName 3.254.78.148
+              User ubuntu
       - name: Install SSH key of target
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.DEV_TOOLS_EC2_PRIVATE_KEY }}
           name: id_rsa-target
           known_hosts: ${{ secrets.KNOWN_HOSTS_OF_TARGET }} # will be appended to existing .ssh/known_hosts
-      - name: Clean-up old versions
-        run: bash cleanup.sh
+          config: |
+            Host target
+              HostName 172.16.32.26
+              User ubuntu
+              IdentityFile ~/.ssh/id_rsa-target
+              ProxyCommand ssh -W %h:%p bastion
+      - name: SCP via port-forwarding
+        run: scp breachresult.txt target:/opt/
