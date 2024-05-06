@@ -19,5 +19,17 @@ jobs:
         uses: webfactory/ssh-agent@v0.8.0
         with:
           ssh-private-key: ${{ secrets.DEV_TOOLS_BASTION_PRIVATE_KEY }}
+      - name: Install SSH key of bastion
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEV_TOOLS_BASTION_PRIVATE_KEY }}
+          name: id_rsa-bastion
+          known_hosts: ${{ secrets.KNOWN_HOSTS_OF_TARGET }}
+      - name: Install SSH key of target
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEV_TOOLS_EC2_PRIVATE_KEY }}
+          name: id_rsa-target
+          known_hosts: ${{ secrets.KNOWN_HOSTS_OF_TARGET }} # will be appended to existing .ssh/known_hosts
       - name: Clean-up old versions
-        run: cleanup.sh
+        run: bash cleanup.sh
