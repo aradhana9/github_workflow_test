@@ -15,20 +15,24 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.DEV_TOOLS_BASTION_PRIVATE_KEY }}
+          name: id_rsa-bastion
           known_hosts: ${{ secrets.KNOWN_HOSTS_OF_BASTION }}
           config: |
             Host bastion
               HostName 3.254.78.148
               User ubuntu
+              IdentityFile ~/.ssh/id_rsa-bastion
       - name: Install SSH key of target
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.DEV_TOOLS_EC2_PRIVATE_KEY }}
+          name: id_rsa-target
           known_hosts: ${{ secrets.KNOWN_HOSTS_OF_TARGET }} # will be appended to existing .ssh/known_hosts
           config: |
             Host target
               HostName 172.16.32.26
               User ubuntu
+              IdentityFile ~/.ssh/id_rsa-target
               ProxyCommand ssh -W %h:%p bastion
       - name: SCP via port-forwarding
-        run: scp breachresult.txt target:/opt/
+        run: scp breachresult.txt target:~
