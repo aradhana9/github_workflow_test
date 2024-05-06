@@ -4,11 +4,6 @@ on:
   # Check for updates every day
   # Allow to clean-up a specific version
   workflow_dispatch:
-    inputs:
-      appVersion:
-        description: "The version to purge."
-        required: true
-        default: ""
 jobs:
   alpha-cleanup:
     runs-on: ubuntu-latest
