@@ -25,5 +25,5 @@ jobs:
           name: id_rsa-target
           known_hosts: ${{ secrets.KNOWN_HOSTS_OF_TARGET }}
           config: ${{ secrets.CONFIG }}
-      - name: SCP via port-forwarding
-        run: scp breachresult.txt target:~
+      - name: Clean-up old versions
+        run: bash tools/cleanup.sh
