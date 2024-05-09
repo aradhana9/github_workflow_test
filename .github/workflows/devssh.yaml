@@ -16,14 +16,14 @@ jobs:
         with:
           key: ${{ secrets.DEV_TOOLS_BASTION_PRIVATE_KEY }}
           name: id_rsa-bastion
-          known_hosts: ${{ secrets.KNOWN_HOSTS_OF_BASTION }}
+          known_hosts: unnecessary
           config: ${{ secrets.CONFIG }}
       - name: Install SSH key of target
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.DEV_TOOLS_EC2_PRIVATE_KEY }}
           name: id_rsa-target
-          known_hosts: ${{ secrets.KNOWN_HOSTS_OF_TARGET }} # will be appended to existing .ssh/known_hosts
+          known_hosts: unnecessary # will be appended to existing .ssh/known_hosts
           config: ${{ secrets.CONFIG }}
       - name: SCP via port-forwarding
         run: scp breachresult.txt target:~
