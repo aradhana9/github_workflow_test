@@ -1,4 +1,4 @@
-name: Alpha clean-up
+name: ssh cleanup
 
 on:
   # Check for updates every day
