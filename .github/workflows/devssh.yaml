@@ -23,6 +23,7 @@ jobs:
         with:
           key: ${{ secrets.DEV_TOOLS_EC2_PRIVATE_KEY }}
           name: id_rsa-target
+          known_hosts: ${{ secrets.KNOWN_HOSTS_OF_TARGET }}
           config: ${{ secrets.CONFIG }}
       - name: SCP via port-forwarding
         run: scp breachresult.txt target:~
