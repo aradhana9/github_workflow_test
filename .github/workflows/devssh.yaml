@@ -16,7 +16,7 @@ jobs:
         with:
           key: ${{ secrets.DEV_TOOLS_BASTION_PRIVATE_KEY }}
           name: id_rsa-bastion
-          known_hosts: unnecessary
+          known_hosts: ${{ secrets.KNOWN_HOSTS_OF_BASTION }}
           config: ${{ secrets.CONFIG }}
       - name: Install SSH key of target
         uses: shimataro/ssh-key-action@v2
