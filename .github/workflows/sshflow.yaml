@@ -1,0 +1,27 @@
+name: Alpha clean-up
+
+on:
+  # Check for updates every day
+  # Allow to clean-up a specific version
+  workflow_dispatch:
+jobs:
+  alpha-cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Configure SSH client
+        run: |
+          echo "$SSH_CONFIG" >> $HOME/.ssh/config
+        env:
+          SSH_CONFIG: "${{ secrets.CONFIG }}"
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@d4b9b8ff72958532804b70bbe600ad43b36d5f2e  # v0.8.0
+        with:
+          ssh-private-key: |
+                ${{ secrets.DEV_TOOLS_BASTION_PRIVATE_KEY }}
+                ${{ secrets.DEV_TOOLS_EC2_PRIVATE_KEY }}
+      - name: SCP via port-forwarding
+        run: scp breachresult.txt target:~
